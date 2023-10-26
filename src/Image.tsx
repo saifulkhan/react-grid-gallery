@@ -1,19 +1,22 @@
-import { useState, MouseEvent } from "react";
-import { CheckButton } from "./CheckButton";
-import { ImageExtended, ImageProps } from "./types";
-import * as styles from "./styles";
-import { getStyle } from "./styles";
+import { useState, MouseEvent } from 'react';
+import { CheckButton } from './CheckButton';
+import { ImageExtended, ImageProps } from './types';
+import * as styles from './styles';
+import { getStyle } from './styles';
+import { RemoveButton } from './RemoveButton';
 
 export const Image = <T extends ImageExtended>({
   item,
   thumbnailImageComponent: ThumbnailImageComponent,
   isSelectable = true,
+  isRemovable = true,
   thumbnailStyle,
   tagStyle,
   tileViewportStyle,
   margin,
   index,
   onSelect,
+  onRemove,
   onClick,
 }: ImageProps<T>): JSX.Element => {
   const styleContext = { item };
@@ -22,10 +25,10 @@ export const Image = <T extends ImageExtended>({
 
   const thumbnailProps = {
     key: index,
-    "data-testid": "grid-gallery-item_thumbnail",
+    'data-testid': 'grid-gallery-item_thumbnail',
     src: item.src,
-    alt: item.alt ? item.alt : "",
-    title: typeof item.caption === "string" ? item.caption : null,
+    alt: item.alt ? item.alt : '',
+    title: typeof item.caption === 'string' ? item.caption : null,
     style: getStyle(thumbnailStyle, styles.thumbnail, styleContext),
   };
 
@@ -34,6 +37,13 @@ export const Image = <T extends ImageExtended>({
       return;
     }
     onSelect(index, event);
+  };
+
+  const handleRemoveButtonClick = (event: MouseEvent<HTMLElement>) => {
+    if (!isRemovable) {
+      return;
+    }
+    onRemove(index, event);
   };
 
   const handleViewportClick = (event: MouseEvent<HTMLElement>) => {
@@ -68,6 +78,11 @@ export const Image = <T extends ImageExtended>({
           isSelected={item.isSelected}
           isVisible={item.isSelected || (isSelectable && hover)}
           onClick={handleCheckButtonClick}
+        />
+        <RemoveButton
+          // isSelected={item.isSelected}
+          // isVisible={item.isSelected || (isSelectable && hover)}
+          onClick={handleRemoveButtonClick}
         />
       </div>
 

@@ -1,15 +1,17 @@
-import { useState, useEffect, useCallback, useRef, MouseEvent } from "react";
-import { Image } from "./Image";
-import { ResizeListener } from "./ResizeListener";
-import { buildLayoutFlat } from "./buildLayout";
-import { Image as ImageInterface, GalleryProps } from "./types";
-import * as styles from "./styles";
+import { useState, useEffect, useCallback, useRef, MouseEvent } from 'react';
+import { Image } from './Image';
+import { ResizeListener } from './ResizeListener';
+import { buildLayoutFlat } from './buildLayout';
+import { Image as ImageInterface, GalleryProps } from './types';
+import * as styles from './styles';
 
 export const Gallery = <T extends ImageInterface>({
   images,
-  id = "ReactGridGallery",
+  id = 'ReactGridGallery',
   enableImageSelection = true,
+  enableImageRemove = true,
   onSelect = () => {},
+  onRemove = () => {},
   rowHeight = 180,
   maxRows,
   margin = 2,
@@ -47,8 +49,15 @@ export const Gallery = <T extends ImageInterface>({
   });
 
   const handleSelect = (index: number, event: MouseEvent<HTMLElement>) => {
+    console.log(`Gallery: handleSelect: index = ${index}`);
     event.preventDefault();
     onSelect(index, images[index], event);
+  };
+
+  const handleRemove = (index: number, event: MouseEvent<HTMLElement>) => {
+    console.log(`Gallery: handleRemove: index = ${index}`);
+    event.preventDefault();
+    onRemove(index, images[index], event);
   };
 
   const handleClick = (index: number, event: MouseEvent<HTMLElement>) => {
@@ -67,8 +76,10 @@ export const Gallery = <T extends ImageInterface>({
             margin={margin}
             height={rowHeight}
             isSelectable={enableImageSelection}
+            isRemovable={enableImageRemove}
             onClick={handleClick}
             onSelect={handleSelect}
+            onRemove={handleRemove}
             tagStyle={tagStyle}
             tileViewportStyle={tileViewportStyle}
             thumbnailStyle={thumbnailStyle}
@@ -80,4 +91,4 @@ export const Gallery = <T extends ImageInterface>({
   );
 };
 
-Gallery.displayName = "Gallery";
+Gallery.displayName = 'Gallery';

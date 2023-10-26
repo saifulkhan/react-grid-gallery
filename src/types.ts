@@ -1,4 +1,4 @@
-import { MouseEvent, CSSProperties, ReactNode, ComponentType } from "react";
+import { MouseEvent, CSSProperties, ReactNode, ComponentType } from 'react';
 
 type Key = string | number;
 
@@ -62,8 +62,10 @@ export interface ImageProps<T extends ImageExtended = ImageExtended> {
   index: number;
   margin: number;
   isSelectable: boolean;
+  isRemovable: boolean;
   onClick: (index: number, event: MouseEvent<HTMLElement>) => void;
   onSelect: (index: number, event: MouseEvent<HTMLElement>) => void;
+  onRemove: (index: number, event: MouseEvent<HTMLElement>) => void;
   tileViewportStyle: StyleProp<T>;
   thumbnailStyle: StyleProp<T>;
   tagStyle: StyleProp<T>;
@@ -88,8 +90,10 @@ export interface GalleryProps<T extends Image = Image> {
   images: T[];
   id?: string;
   enableImageSelection?: boolean;
+  enableImageRemove?: boolean;
   onSelect?: EventHandler<T>;
   rowHeight?: number;
+  onRemove?: EventHandler<T>;
   maxRows?: number;
   margin?: number;
   defaultContainerWidth?: number;
